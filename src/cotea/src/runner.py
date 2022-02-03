@@ -218,7 +218,7 @@ class runner:
             self.sync_obj.runner_just_wait()
         else:
             self.sync_obj.continue_ansible_with_stop()
-
+        
         # this is not first play
         if self.setup_play_called_once and self._tqm_run_wrp.was_called:
             # there was an error

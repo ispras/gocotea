@@ -1,6 +1,8 @@
-package goans
+package gocotea
 
-import gopython "github.com/ispras/michman/gopython"
+import (
+	gopython "github.com/ispras/gopython/src"
+)
 
 type ArgumentMaker struct {
 	classNamePy          string
@@ -8,7 +10,7 @@ type ArgumentMaker struct {
 }
 
 func (argmaker *ArgumentMaker) InitArgMaker() error {
-	argumentsMakerModuleName := "cotea.arguments_maker"
+	argumentsMakerModuleName := "cotea.src.arguments_maker"
 	argmaker.classNamePy = "argument_maker"
 
 	var argmakerModule gopython.PythonModule
@@ -41,7 +43,7 @@ func (argmaker *ArgumentMaker) InitArgMaker() error {
 
 func (argmaker *ArgumentMaker) AddArgument(args ...string) error {
 	var argsToPythonMethod gopython.PythonMethodArguments
-	methodName := "add_param"
+	methodName := "add_arg"
 
 	if len(args) == 1 {
 		argsToPythonMethod.SetArgCount(1)

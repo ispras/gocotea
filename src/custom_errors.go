@@ -1,6 +1,8 @@
-package goans
+package gocotea
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type PythonImportError struct {
 	ModuleName string
@@ -11,7 +13,7 @@ func (p *PythonImportError) Error() string {
 	format := "Can't import module with name %s."
 	format += "Error message:\n%s.\n"
 	format += "Probably you don't set PYTHONPATH env var properly. "
-	format += "Make:\n\texport PYTHONPATH=MICHMAN_HOME/goans"
+	format += "Make:\n\texport PYTHONPATH=$GOPATH/src/github.com/ispras/gocotea/src"
 	return fmt.Sprintf(format, p.ModuleName, p.ErrorMsg)
 }
 

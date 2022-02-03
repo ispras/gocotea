@@ -1,10 +1,10 @@
-package goans
+package gocotea
 
 import (
 	"fmt"
 	"os"
 
-	gopython "github.com/ispras/michman/gopython"
+	gopython "github.com/ispras/gopython/src"
 )
 
 type Runner struct {
@@ -17,10 +17,10 @@ type Runner struct {
 }
 
 func (r *Runner) InitRunner(argmaker *ArgumentMaker, pbPath, debugMode, logFile string) error {
+	moduleNamePy := "cotea.src.runner"
 	r.playbookPath = pbPath
 	r.argMaker = argmaker
 	r.classNamePy = "runner"
-	moduleNamePy := "cotea.runner"
 
 	var runnerModule gopython.PythonModule
 	runnerModule.SetModuleName(moduleNamePy)
@@ -57,16 +57,6 @@ func (r *Runner) InitRunner(argmaker *ArgumentMaker, pbPath, debugMode, logFile 
 	// we're creating it on time here
 	r.emptyArgs.SetArgCount(0)
 
-	return nil
-}
-
-func (r *Runner) SetupPythonInterpreter() error {
-	gopython.InitPythonInterpretetor()
-	return nil
-}
-
-func (r *Runner) FinalizePythonInterpreter() error {
-	gopython.FinalizePythonInterpretetor()
 	return nil
 }
 
