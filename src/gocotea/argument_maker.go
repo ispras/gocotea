@@ -1,7 +1,7 @@
 package gocotea
 
 import (
-	gopython "github.com/ispras/gopython/src"
+	gopython "github.com/ispras/gopython/src/gopython"
 )
 
 type ArgumentMaker struct {
@@ -10,7 +10,7 @@ type ArgumentMaker struct {
 }
 
 func (argmaker *ArgumentMaker) InitArgMaker() error {
-	argumentsMakerModuleName := "cotea.src.arguments_maker"
+	argumentsMakerModuleName := "cotea.arguments_maker"
 	argmaker.classNamePy = "argument_maker"
 
 	var argmakerModule gopython.PythonModule

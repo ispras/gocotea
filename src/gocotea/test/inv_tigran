@@ -1,0 +1,5 @@
+[host1]           
+host1       ansible_host=10.10.10.233      ansible_connection=ssh      ansible_ssh_port=2225      ansible_user=test
+
+[targets]
+host1

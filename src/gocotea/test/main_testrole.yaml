@@ -1,0 +1,6 @@
+---
+- name: Play1
+  hosts: all
+  remote_user: test
+  roles:
+    - role: test

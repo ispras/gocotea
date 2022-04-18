@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	gopython "github.com/ispras/gopython/src"
+	gopython "github.com/ispras/gopython/src/gopython"
 )
 
 type Runner struct {
@@ -17,7 +17,7 @@ type Runner struct {
 }
 
 func (r *Runner) InitRunner(argmaker *ArgumentMaker, pbPath, debugMode, logFile string) error {
-	moduleNamePy := "cotea.src.runner"
+	moduleNamePy := "cotea.runner"
 	r.playbookPath = pbPath
 	r.argMaker = argmaker
 	r.classNamePy = "runner"
@@ -39,19 +39,21 @@ func (r *Runner) InitRunner(argmaker *ArgumentMaker, pbPath, debugMode, logFile 
 	}
 
 	var initArgs gopython.PythonMethodArguments
-	initArgsCount := 4
+	initArgsCount := 2
 
 	initArgs.SetArgCount(initArgsCount)
 	initArgs.SetNextArgument(pbPath)
 	initArgs.SetNextArgument(argmaker.argMakerPythonObject)
-	initArgs.SetNextArgument(debugMode)
-	initArgs.SetNextArgument(logFile)
+	//initArgs.SetNextArgument(debugMode)
+	//initArgs.SetNextArgument(logFile)
 
 	r.runnerPythonObject, err = runnerClass.CreateObject(&initArgs)
 	if err != nil {
 		return &PythonObjectCreationError{ClassName: r.classNamePy,
 			ErrorMsg: err.Error()}
 	}
+
+	fmt.Println(r.runnerPythonObject)
 
 	// python runner object has a lot of methods who takes 0 arguments
 	// we're creating it on time here
@@ -80,25 +82,25 @@ func (r *Runner) HasNextPlay() bool {
 	return res.(bool)
 }
 
-func (r *Runner) SetupPlayForRun() bool {
-	methodNamePy := "setup_play_for_run"
-	resObjects, err := r.runnerPythonObject.CallMethod(methodNamePy, &r.emptyArgs)
-	if err != nil {
-		gotErr := PythonCallMethodError{MethodName: methodNamePy,
-			ClassName: r.classNamePy, ErrorMsg: err.Error()}
-		fmt.Println(gotErr.Error())
-		os.Exit(1)
-	}
+// func (r *Runner) SetupPlayForRun() bool {
+// 	methodNamePy := "setup_play_for_run"
+// 	resObjects, err := r.runnerPythonObject.CallMethod(methodNamePy, &r.emptyArgs)
+// 	if err != nil {
+// 		gotErr := PythonCallMethodError{MethodName: methodNamePy,
+// 			ClassName: r.classNamePy, ErrorMsg: err.Error()}
+// 		fmt.Println(gotErr.Error())
+// 		os.Exit(1)
+// 	}
 
-	setupOkPy := resObjects[0]
-	res, typeError := setupOkPy.ToStandartGoType()
-	if typeError != nil {
-		fmt.Println(typeError)
-		os.Exit(1)
-	}
+// 	setupOkPy := resObjects[0]
+// 	res, typeError := setupOkPy.ToStandartGoType()
+// 	if typeError != nil {
+// 		fmt.Println(typeError)
+// 		os.Exit(1)
+// 	}
 
-	return res.(bool)
-}
+// 	return res.(bool)
+// }
 
 func (r *Runner) HasNextTask() bool {
 	methodNamePy := "has_next_task"
@@ -131,7 +133,7 @@ func (r *Runner) HasNextTask() bool {
 
 func (r *Runner) RunNextTask() bool {
 	methodNamePy := "run_next_task"
-	resObjects, err := r.runnerPythonObject.CallMethod(methodNamePy, &r.emptyArgs)
+	_, err := r.runnerPythonObject.CallMethod(methodNamePy, &r.emptyArgs)
 	if err != nil {
 		gotErr := PythonCallMethodError{MethodName: methodNamePy,
 			ClassName: r.classNamePy, ErrorMsg: err.Error()}
@@ -139,14 +141,14 @@ func (r *Runner) RunNextTask() bool {
 		os.Exit(1)
 	}
 
-	runNextPy := resObjects[0]
-	res, typeError := runNextPy.ToStandartGoType()
-	if typeError != nil {
-		fmt.Println(typeError)
-		os.Exit(1)
-	}
+	// runNextPy := resObjects[0]
+	// res, typeError := runNextPy.ToStandartGoType()
+	// if typeError != nil {
+	// 	fmt.Println(typeError)
+	// 	os.Exit(1)
+	// }
 
-	return res.(bool)
+	return true
 }
 
 func (r *Runner) FinishAnsibleWork() bool {
@@ -212,6 +214,7 @@ func (r *Runner) GetErrorMsg() string {
 		os.Exit(1)
 	}
 
+	fmt.Println(resObjects[0])
 	runNextPy := resObjects[0]
 	res, typeError := runNextPy.ToStandartGoType()
 	if typeError != nil {

@@ -1,0 +1,24 @@
+---
+
+- name: Execute bad command
+  ansible.builtin.shell: mv ebo bobe
+  ignore_errors: True
+  
+- name: Debug vars
+  ansible.builtin.debug:
+    msg: Java version = {{ java_version }} and password is {{ password }}
+
+- name: Debug extra vars
+  ansible.builtin.debug:
+    msg: Jupyter install - {{ jupyter_install }} and spark version is {{ spark_version }}
+
+# - name: Print all available facts
+#   ansible.builtin.debug:
+#     var: ansible_facts
+
+- name: Pinge Ponge
+  ping:
+
+- name: Debug vars
+  ansible.builtin.debug:
+    msg: Java version = {{ java_version }} and password is {{ password }}

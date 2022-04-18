@@ -1,0 +1,13 @@
+[host1]           
+host1       ansible_host=10.10.10.91      ansible_connection=ssh      ansible_ssh_port=2222      ansible_user=test
+
+[host2]
+host2       ansible_host=10.10.10.91      ansible_connection=ssh      ansible_ssh_port=2223      ansible_user=test
+
+[host3]
+host3       ansible_host=10.10.10.91      ansible_connection=ssh      ansible_ssh_port=2224      ansible_user=test
+
+[targets]
+host1
+host2
+host3

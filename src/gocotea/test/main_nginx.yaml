@@ -1,0 +1,7 @@
+---
+- name: Play1
+  hosts: all
+  remote_user: test
+  become: true
+  roles:
+    - role: nginxinc.nginx

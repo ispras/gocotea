@@ -1,0 +1,23 @@
+---
+- name: Play1
+  hosts: all
+  # remote_user: test
+  # become: true
+  
+  vars:
+    jenkins_hostname: jenkins.example.com
+    java_packages:
+      - openjdk-8-jdk
+
+  roles:
+    - role: geerlingguy.postgresql
+    - role: robertdebock.bootstrap
+    - role: geerlingguy.apache
+    - role: geerlingguy.pip
+    - role: geerlingguy.docker
+    - role: geerlingguy.ruby
+    - role: geerlingguy.redis
+    - role: geerlingguy.php
+    - role: geerlingguy.java
+    - role: geerlingguy.jenkins
+    

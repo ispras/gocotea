@@ -1,7 +1,7 @@
 package gocotea
 
 import (
-	gopython "github.com/ispras/gopython/src"
+	gopython "github.com/ispras/gopython/src/gopython"
 )
 
 func InitPythonInterpretetor() error {

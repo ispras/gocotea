@@ -1,0 +1,20 @@
+---
+- name: Play1
+  hosts: all
+  vars_files:
+    - variables.yaml
+  
+  tasks:
+  - name: Execute bad command
+    ansible.builtin.shell: mv ebo bobe
+    ignore_errors: True
+  
+  - name: Debug vars
+    ansible.builtin.debug:
+      msg: Java version = {{ java_version }} and password is {{ password }}
+
+  - name: Pinge Ponge
+    ping:
+
+- name: Play2
+  hosts: all
