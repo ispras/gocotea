@@ -16,7 +16,7 @@ type Runner struct {
 	emptyArgs          gopython.PythonMethodArguments
 }
 
-func (r *Runner) InitRunner(argmaker *ArgumentMaker, pbPath, debugMode, logFile string) error {
+func (r *Runner) InitRunner(argmaker *ArgumentMaker, pbPath string) error {
 	moduleNamePy := "cotea.runner"
 	r.playbookPath = pbPath
 	r.argMaker = argmaker
