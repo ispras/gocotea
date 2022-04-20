@@ -28,7 +28,7 @@ pip install -i https://test.pypi.org/simple/ cotea==1.2
 go mod init PREFERED_NAME
 ```
 
-4. Include gocotea to your code with this import:
+4. Include gocotea to your code (located in the created module) with this import:
 ```Golang
 import "github.com/ispras/gocotea/src/gocotea"
 ```
@@ -38,7 +38,7 @@ import "github.com/ispras/gocotea/src/gocotea"
 go mod tidy
 ```
 
-Creating a go module is necessary for correct installation of Golang.
+Creating a go module is necessary for correct installation of gocotea.
 
 ## Quick start
 ```Golang
