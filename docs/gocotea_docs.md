@@ -38,19 +38,13 @@ After all of the needed actions, *ArgumentMaker* object should be passed to runn
 
 ## Runner
 
-**InitRunner(argmaker *ArgumentMaker, pbPath, debugMode, logFile string) error***
+**InitRunner(argmaker *ArgumentMaker, pbPath) error***
 - *argmaker* - object of *argument_maker* class
 - *pbPath* - path of the playbook .yaml file
-- *debugMode* - currently this option is not for user purposes. It is planned that in future this option will this option will give usefull information for *gocotea* user
-- *logFile* - path to file to which all the *gocotea* output will be redirected. cotea output means the standard Ansible output with the *cotea* additional messages. This option can be useful when one embeds Ansible into another system. The system's output will not contain Ansible output in this case.
-
 ### controlling interfaces
 
 **HasNextPlay() bool**
 Checks if there is unexecuted *plays* in current Ansible execution. Returns *true* if there is.
-
-**SetupPlayForRun() bool**
-Starts a bunch of actions that are needed to setup play for run. Returns, when play is ready to run (returns *true*). If there was an error and *play* is not ready to start, returns *false*.
 
 **HasNextTask() bool**
 Checks if there is unexecuted *tasks* in currently executing *play*. Returns *true* if there is.
@@ -67,12 +61,8 @@ var r gocotea.Runner
 # r = InitRunner(...)
 
 for r.HasNextPlay() {
-	setupOk := r.SetupPlayForRun()
-
-	if setupOk {
-		for r.HasNextTask() {
-			r.RunNextTask()
-		}
+	for r.HasNextTask() {
+		r.RunNextTask()
 	}
 }
 

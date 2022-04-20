@@ -11,24 +11,34 @@ Tool that provides Golang API to run Ansible programmatically. *gocotea* is a po
 - **To debug** Ansible execution by getting the values of Ansible variables and by retrieving the results of the execution of Ansible tasks/plays
 
 ## Installation
-It is assumed that Ansible is installed in the current environment. The dependencies of *gocotea* are [cotea](https://github.com/ispras/cotea) and [gopython](https://github.com/ispras/gopython). 
+Tested on ubuntu 20.04 with golang 1.18 and python 3.8.10.
 
-[gopython](https://github.com/ispras/gopython) is a Golang package and it will be installed automatically after *gocotea* installation:
+1. Install ansible:
 ```bash
-go get github.com/ispras/gocotea
+pip install ansible==2.9.4
 ```
 
-You also have to set PYTHONPATH env variable in the enviroment where you want to use *gocotea*:
+2. Install cotea:
 ```bash
-export PYTHONPATH=$GOPATH/src/github.com/ispras/gocotea/src
+pip install -i https://test.pypi.org/simple/ cotea==1.2
 ```
 
-PYTHONPATH variable is used by [gopython](https://github.com/ispras/gopython) for embedding of [cotea](https://github.com/ispras/cotea). This is beacause *gocotea* is based on the embedding of [cotea](https://github.com/ispras/cotea) into Golang. The embedding is done by using the source code of [cotea](https://github.com/ispras/cotea). At the moment there is no support of *pip* installation for [cotea](https://github.com/ispras/cotea), so in the *src/* folder there is a *cotea/* folder with cotea's source code (and the PYTHONPATH variable points just there). 
+3. Create go module:
+```bash
+go mod init PREFERED_NAME
+```
 
-Include *gocotea* into your code after all these steps:
+4. Include gocotea to your code with this import:
 ```Golang
-import gocotea "github.com/ispras/gocotea/src"
+import "github.com/ispras/gocotea/src/gocotea"
 ```
+
+5. Make go mod tidy. This command will download required golang packages (including gocotea and gopython)
+```bash
+go mod tidy
+```
+
+Creating a go module is necessary for correct installation of Golang.
 
 ## Quick start
 ```Golang
@@ -37,32 +47,27 @@ package main
 import (
 	"fmt"
 
-	gocotea "github.com/ispras/gocotea/src"
+	"github.com/ispras/gocotea/src/gocotea"
 )
 
 func main() {
-	inventory := "/path/to/inventory"
-	playbookPath := "/path/to/playbook"
+	pbPath := "/path/to/playbook"
+	inv := "/path/to/inventory"
 
 	gocotea.InitPythonInterpretetor()
 
-	var r gocotea.Runner
 	var argMaker gocotea.ArgumentMaker
 
 	argMaker.InitArgMaker()
-	argMaker.AddArgument("-i", inventory)
+	argMaker.AddArgument("-i", inv)
 
-	r.InitRunner(&argMaker, playbookPath, "INFO", "/path/to/ansible/log/file")
+	var r gocotea.Runner
+
+	r.InitRunner(&argMaker, pbPath)
 
 	for r.HasNextPlay() {
-		setupOk := r.SetupPlayForRun()
-		fmt.Printf("Play: %s\n", r.GetCurrentPlayName())
-
-		if setupOk {
-			for r.HasNextTask() {
-				fmt.Printf("\tTask: %s\n", r.GetNextTaskName())
-				r.RunNextTask()
-			}
+		for r.HasNextTask() {
+			r.RunNextTask()
 		}
 	}
 
