@@ -5,12 +5,12 @@ Images:
 
 Build both images and enter theire names into docker-compose.yaml file. After this make:
 ```bash
-docker compose up -d
+docker-compose up -d
 ```
 
-After that enter into gocotea container (make docker ps to obtain gocotea container ID):
+After that enter into gocotea container:
 ```bash
-docker exec -it GOCOTEA_CONTAINER_ID /bin/bash
+docker exec -it gocoteahost /bin/bash
 ```
 
 In the container make:
