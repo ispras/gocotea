@@ -82,26 +82,6 @@ func (r *Runner) HasNextPlay() bool {
 	return res.(bool)
 }
 
-// func (r *Runner) SetupPlayForRun() bool {
-// 	methodNamePy := "setup_play_for_run"
-// 	resObjects, err := r.runnerPythonObject.CallMethod(methodNamePy, &r.emptyArgs)
-// 	if err != nil {
-// 		gotErr := PythonCallMethodError{MethodName: methodNamePy,
-// 			ClassName: r.classNamePy, ErrorMsg: err.Error()}
-// 		fmt.Println(gotErr.Error())
-// 		os.Exit(1)
-// 	}
-
-// 	setupOkPy := resObjects[0]
-// 	res, typeError := setupOkPy.ToStandartGoType()
-// 	if typeError != nil {
-// 		fmt.Println(typeError)
-// 		os.Exit(1)
-// 	}
-
-// 	return res.(bool)
-// }
-
 func (r *Runner) HasNextTask() bool {
 	methodNamePy := "has_next_task"
 	resObjects, err := r.runnerPythonObject.CallMethod(methodNamePy, &r.emptyArgs)
@@ -131,9 +111,9 @@ func (r *Runner) HasNextTask() bool {
 	return res
 }
 
-func (r *Runner) RunNextTask() bool {
+func (r *Runner) RunNextTask() []*TaskResult {
 	methodNamePy := "run_next_task"
-	_, err := r.runnerPythonObject.CallMethod(methodNamePy, &r.emptyArgs)
+	taskResultsPy, err := r.runnerPythonObject.CallMethod(methodNamePy, &r.emptyArgs)
 	if err != nil {
 		gotErr := PythonCallMethodError{MethodName: methodNamePy,
 			ClassName: r.classNamePy, ErrorMsg: err.Error()}
@@ -141,14 +121,24 @@ func (r *Runner) RunNextTask() bool {
 		os.Exit(1)
 	}
 
-	// runNextPy := resObjects[0]
-	// res, typeError := runNextPy.ToStandartGoType()
-	// if typeError != nil {
-	// 	fmt.Println(typeError)
-	// 	os.Exit(1)
-	// }
+	taskResultPythonObjects := taskResultsPy[0].GetPythonObjectsFromPyList()
 
-	return true
+	resultsObjectsCount := len(taskResultPythonObjects)
+	res := make([]*TaskResult, resultsObjectsCount)
+
+	for i := 0; i < resultsObjectsCount; i += 1 {
+		res[i], err = MakeTaskResFromPyObj(taskResultPythonObjects[i])
+		if err != nil {
+			break
+		}
+	}
+
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	return res
 }
 
 func (r *Runner) FinishAnsibleWork() bool {
