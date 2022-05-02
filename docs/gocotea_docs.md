@@ -44,18 +44,22 @@ After all of the needed actions, *ArgumentMaker* object should be passed to runn
 ### controlling interfaces
 
 **HasNextPlay() bool**
+
 Checks if there is unexecuted *plays* in current Ansible execution. Returns *true* if there is.
 
 **HasNextTask() bool**
+
 Checks if there is unexecuted *tasks* in currently executing *play*. Returns *true* if there is.
 
-**RunNextTask() bool**
-Runs the next *task* in the currently executing *play*. 
+**RunNextTask() []*TaskResult**
+
+Runs the next *task* in the currently executing *play*. Returns a slice of [TaskResult](https://github.com/ispras/gocotea/blob/main/docs/gocotea_docs.md#taskresult) structure objects that describe the result of the executed task on each host in the current group of hosts. 
 
 **FinishAnsibleWork() bool**
-Starts a bunch of actions that are needed to finish the current Ansible execution. This method has to be called only when there are no unexecuted *plays* and *tasks* (has_next_play and has_next_task return *false*).
 
-These five interfaces are the main part of *gocotea*. They let one control the execution of *ansible-playbook* launch. Every usage of cotea will contain them in the following order:
+Starts a bunch of actions that are needed to finish the current Ansible execution.
+
+These four interfaces are the main part of *gocotea*. They let one control the execution of *ansible-playbook* launch. Every usage of gocotea will contain them in the following order:
 ```python
 var r gocotea.Runner
 # r = InitRunner(...)
@@ -71,13 +75,34 @@ r.FinishAnsibleWork()
 
 ### debugging interfaces
 **WasError() bool**
+
 Returns *true* if Ansible execution ends with an error.
 
 **GetErrorMsg() string**
-If Ansible execution ends with an error(*was_error* returns *true*), returns error message.
+
+If Ansible execution ends with an error (*was_error* returns *true*), returns error message.
 
 **GetCurrentPlayName() string**
+
 Returns the current play name.
 
 **GetNextTaskName() string**
+
 Returns the next task name.
+
+**GetPrevTaskName() string**
+
+Returns the previous task name.
+
+### TaskResult
+This class stores the task results in a convenient way. Based on [ansible.executor.task_result.TaskResult](https://github.com/ansible/ansible/blob/devel/lib/ansible/executor/task_result.py#L25).
+
+Fields:
+- *TaskName* - the name of the task
+- *TaskStdOut* - the stdout of the task
+- *TaskStdErr* - the stderr of the task
+- *TaskMsg* - Ansible's msg about the task
+-  *IsChanged* - True if task is "changed"
+-  *IsFailed* - True if task was failed
+-  *IsSkipped* - True if task was skipped
+-  *IsUnreachable* - True if "unreachable"

@@ -1,6 +1,6 @@
 # gocotea
 
-#### (COntrol Thread Execution Ansible)
+#### (cotea - COntrol Thread Execution Ansible)
 
 ### gocotea is:
 Tool that provides Golang API to run Ansible programmatically. *gocotea* is a port of [cotea](https://github.com/ispras/cotea) into Golang. Porting was done using the [gopython](https://github.com/ispras/gopython) tool.
@@ -11,7 +11,7 @@ Tool that provides Golang API to run Ansible programmatically. *gocotea* is a po
 - **To debug** Ansible execution by getting the values of Ansible variables and by retrieving the results of the execution of Ansible tasks/plays
 
 ## Installation
-Tested on ubuntu 20.04 with golang 1.18 and python 3.8.10. cotea 1.3.3 is required.
+Tested on ubuntu 20.04 with golang 1.18 and python 3.8.10. cotea 1.3.3 and gopython 0.2.1 are required.
 
 1. Install ansible:
 ```bash
@@ -67,6 +67,8 @@ func main() {
 
 	for r.HasNextPlay() {
 		for r.HasNextTask() {
+		    fmt.Println("Next task name: ", r.GetNextTaskName())
+		    
 			r.RunNextTask()
 		}
 	}
@@ -83,7 +85,5 @@ func main() {
 ```
 Any argument of the "ansible-playbook" command can be passed by using **ArgumentMaker** object.
 The launch and control of the Ansible is carried out using the **Runner** object.
-
-The Ansible output will be forwarded special log file. Path to this file is passed to *InitRunner* method of the Runner structure. 
 
 A detailed overview of all interfaces is provided in [gocotea documentation](https://github.com/ispras/gocotea/blob/main/docs/gocotea_docs.md).
