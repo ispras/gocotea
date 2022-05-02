@@ -51,35 +51,35 @@ import (
 )
 
 func main() {
-	pbPath := "/path/to/playbook"
-	inv := "/path/to/inventory"
+    pbPath := "/path/to/playbook"
+    inv := "/path/to/inventory"
 
-	gocotea.InitPythonInterpretetor()
+    gocotea.InitPythonInterpretetor()
 
-	var argMaker gocotea.ArgumentMaker
+    var argMaker gocotea.ArgumentMaker
 
-	argMaker.InitArgMaker()
-	argMaker.AddArgument("-i", inv)
+    argMaker.InitArgMaker()
+    argMaker.AddArgument("-i", inv)
 
-	var r gocotea.Runner
+    var r gocotea.Runner
 
-	r.InitRunner(&argMaker, pbPath)
+    r.InitRunner(&argMaker, pbPath)
 
     for r.HasNextPlay() {
         for r.HasNextTask() {
-		    fmt.Println("Next task name: ", r.GetNextTaskName())
+            fmt.Println("Next task name: ", r.GetNextTaskName())
 		    
             r.RunNextTask()
-		}
-	}
+        }
+    }
 
-	r.FinishAnsibleWork()
+    r.FinishAnsibleWork()
 
-	if r.WasError() {
-		fmt.Printf("Ansible failed. Error:\n%s\n", r.GetErrorMsg())
-	}
+    if r.WasError() {
+        fmt.Printf("Ansible failed. Error:\n%s\n", r.GetErrorMsg())
+    }
 
-	gocotea.FinalizePythonInterpretetor()
+    gocotea.FinalizePythonInterpretetor()
 }
 
 ```

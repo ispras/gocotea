@@ -65,9 +65,9 @@ var r gocotea.Runner
 # r = InitRunner(...)
 
 for r.HasNextPlay() {
-	for r.HasNextTask() {
-		r.RunNextTask()
-	}
+    for r.HasNextTask() {
+        r.RunNextTask()
+    }
 }
 
 r.FinishAnsibleWork()
