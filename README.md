@@ -11,7 +11,7 @@ Tool that provides Golang API to run Ansible programmatically. *gocotea* is a po
 - **To debug** Ansible execution by getting the values of Ansible variables and by retrieving the results of the execution of Ansible tasks/plays
 
 ## Installation
-Tested on ubuntu 20.04 with golang 1.18 and python 3.8.10.
+Tested on ubuntu 20.04 with golang 1.18 and python 3.8.10. cotea 1.3.3 is required.
 
 1. Install ansible:
 ```bash
@@ -20,7 +20,7 @@ pip install ansible==2.9.4
 
 2. Install cotea:
 ```bash
-pip install -i https://test.pypi.org/simple/ cotea==1.2
+pip install -i https://test.pypi.org/simple/ cotea==1.3.3
 ```
 
 3. Create go module:

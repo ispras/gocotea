@@ -154,26 +154,6 @@ func (r *Runner) FinishAnsibleWork() bool {
 	return true
 }
 
-func (r *Runner) GetIP() string {
-	methodNamePy := "_getIP"
-	resObjects, err := r.runnerPythonObject.CallMethod(methodNamePy, &r.emptyArgs)
-	if err != nil {
-		gotErr := PythonCallMethodError{MethodName: methodNamePy,
-			ClassName: r.classNamePy, ErrorMsg: err.Error()}
-		fmt.Println(gotErr.Error())
-		os.Exit(1)
-	}
-
-	runNextPy := resObjects[0]
-	res, typeError := runNextPy.ToStandartGoType()
-	if typeError != nil {
-		fmt.Println(typeError)
-		os.Exit(1)
-	}
-
-	return res.(string)
-}
-
 func (r *Runner) WasError() bool {
 	methodNamePy := "was_error"
 	resObjects, err := r.runnerPythonObject.CallMethod(methodNamePy, &r.emptyArgs)
@@ -204,7 +184,6 @@ func (r *Runner) GetErrorMsg() string {
 		os.Exit(1)
 	}
 
-	fmt.Println(resObjects[0])
 	runNextPy := resObjects[0]
 	res, typeError := runNextPy.ToStandartGoType()
 	if typeError != nil {
@@ -215,8 +194,8 @@ func (r *Runner) GetErrorMsg() string {
 	return res.(string)
 }
 
-func (r *Runner) GetAnsibleRunString() string {
-	methodNamePy := "get_run_string"
+func (r *Runner) GetNextTaskName() string {
+	methodNamePy := "get_next_task_name"
 	resObjects, err := r.runnerPythonObject.CallMethod(methodNamePy, &r.emptyArgs)
 	if err != nil {
 		gotErr := PythonCallMethodError{MethodName: methodNamePy,
@@ -235,8 +214,8 @@ func (r *Runner) GetAnsibleRunString() string {
 	return res.(string)
 }
 
-func (r *Runner) GetNextTaskName() string {
-	methodNamePy := "get_next_task_name"
+func (r *Runner) GetPrevTaskName() string {
+	methodNamePy := "get_prev_task_name"
 	resObjects, err := r.runnerPythonObject.CallMethod(methodNamePy, &r.emptyArgs)
 	if err != nil {
 		gotErr := PythonCallMethodError{MethodName: methodNamePy,

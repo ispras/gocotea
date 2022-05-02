@@ -23,13 +23,20 @@ func main() {
 
 	for r.HasNextPlay() {
 		for r.HasNextTask() {
-			r.RunNextTask()
+			fmt.Println("Next task name: ", r.GetNextTaskName())
+
+			taskResults := r.RunNextTask()
+			if len(taskResults) > 0 {
+				fmt.Println("Task IsChanged:", taskResults[0].IsChanged)
+			}
 		}
 	}
 
 	r.FinishAnsibleWork()
 
-	gocotea.FinalizePythonInterpretetor()
+	if r.WasError() {
+		fmt.Printf("Ansible failed. Error:\n%s\n", r.GetErrorMsg())
+	}
 
-	fmt.Println("END")
+	gocotea.FinalizePythonInterpretetor()
 }
