@@ -3,7 +3,7 @@ FROM python:3
 
 RUN pip3 install ansible==2.9.4
 
-RUN pip3 install -i https://test.pypi.org/simple/ cotea==1.2
+RUN pip3 install -i https://test.pypi.org/simple/ cotea==1.3.3
 
 RUN apt update && apt install openssh-server sudo sshpass -y
 
