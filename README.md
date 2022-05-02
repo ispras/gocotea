@@ -65,11 +65,11 @@ func main() {
 
 	r.InitRunner(&argMaker, pbPath)
 
-	for r.HasNextPlay() {
-		for r.HasNextTask() {
+    for r.HasNextPlay() {
+        for r.HasNextTask() {
 		    fmt.Println("Next task name: ", r.GetNextTaskName())
 		    
-			r.RunNextTask()
+            r.RunNextTask()
 		}
 	}
 

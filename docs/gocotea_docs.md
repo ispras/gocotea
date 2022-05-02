@@ -51,7 +51,7 @@ Checks if there is unexecuted *plays* in current Ansible execution. Returns *tru
 
 Checks if there is unexecuted *tasks* in currently executing *play*. Returns *true* if there is.
 
-**RunNextTask() []*TaskResult**
+**RunNextTask() []TaskResult**
 
 Runs the next *task* in the currently executing *play*. Returns a slice of [TaskResult](https://github.com/ispras/gocotea/blob/main/docs/gocotea_docs.md#taskresult) structure objects that describe the result of the executed task on each host in the current group of hosts. 
 
@@ -95,7 +95,7 @@ Returns the next task name.
 Returns the previous task name.
 
 ### TaskResult
-This class stores the task results in a convenient way. Based on [ansible.executor.task_result.TaskResult](https://github.com/ansible/ansible/blob/devel/lib/ansible/executor/task_result.py#L25).
+This structure stores the task results in a convenient way. Based on [ansible.executor.task_result.TaskResult](https://github.com/ansible/ansible/blob/devel/lib/ansible/executor/task_result.py#L25).
 
 Fields:
 - *TaskName* - the name of the task
